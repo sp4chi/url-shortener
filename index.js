@@ -55,6 +55,32 @@ app.get('/test-db', async (req, res) => {
   }
 });
 
+app.get('/api/stats/:shortCode', async (req, res) => {
+  const { shortCode } = req.params;
+
+  try {
+    const result = await pool.query(
+      'SELECT original_url, short_code, clicks, created_at FROM urls WHERE short_code = $1',
+      [shortCode],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Short link not found' });
+    }
+
+    const row = result.rows[0];
+    res.json({
+      originalUrl: row.original_url,
+      shortCode: row.short_code,
+      clicks: row.clicks,
+      createdAt: row.created_at,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
 app.get('/:shortCode', async (req, res) => {
   const { shortCode } = req.params;
 

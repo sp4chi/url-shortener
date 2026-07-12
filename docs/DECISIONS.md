@@ -49,3 +49,8 @@
 
 - **Chosen:** res.redirect() called before the click-count UPDATE query, both non-blocking
 - **Context:** Since the UPDATE isn't awaited, ordering doesn't affect actual latency — but placing redirect first matches the endpoint's real priority (respond fast) over its side effect (log the click). Known tradeoff: an in-flight click count update could theoretically be lost if the process crashes mid-write; considered acceptable since exact click-count precision isn't a core requirement.
+
+### Analytics: Counter vs Event Log
+
+- **Chosen:** Simple `clicks` counter column for now; `clicks` log table created but unused until prediction feature (Day 9)
+- **Context:** Current requirement is only "show total clicks," which a counter satisfies cheaply. A full event log is unnecessary complexity until time-series data is actually needed (for forecasting). Table created early with a foreign key to `urls(short_code)` to enforce referential integrity from the start, even though writes to it haven't been implemented yet.

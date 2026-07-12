@@ -27,3 +27,8 @@
 ## [Unreleased]
 
 - Implemented GET /:shortCode redirect endpoint with async click counting
+
+## [Unreleased]
+
+- Implemented GET /api/stats/:shortCode endpoint
+- Created clicks table (FK to urls) for future time-series analytics
