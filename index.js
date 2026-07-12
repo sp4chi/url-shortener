@@ -38,6 +38,7 @@ app.post('/api/shorten', async (req, res) => {
       shortCode,
       newId,
     ]);
+
     res.json({ shortUrl: `http://localhost:${PORT}/${shortCode}` });
   } catch (err) {
     console.error(err);
@@ -51,6 +52,33 @@ app.get('/test-db', async (req, res) => {
     res.json({ success: true, time: result.rows[0] });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.get('/:shortCode', async (req, res) => {
+  const { shortCode } = req.params;
+
+  try {
+    const result = await pool.query(
+      'SELECT original_url FROM urls WHERE short_code = $1',
+      [shortCode],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).send('Short link not found');
+    }
+
+    res.redirect(302, result.rows[0].original_url);
+
+    // increment click count, but don't block the redirect waiting for it
+    pool
+      .query('UPDATE urls SET clicks = clicks + 1 WHERE short_code = $1', [
+        shortCode,
+      ])
+      .catch((err) => console.error('Failed to log click:', err));
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Something went wrong');
   }
 });
 

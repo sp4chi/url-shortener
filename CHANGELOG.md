@@ -23,3 +23,7 @@
 
 - Implemented POST /api/shorten endpoint with URL validation
 - Fixed routing/middleware/scoping bugs (see debugging log)
+
+## [Unreleased]
+
+- Implemented GET /:shortCode redirect endpoint with async click counting
