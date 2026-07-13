@@ -50,3 +50,9 @@
 ## [Unreleased]
 
 - Added duplicate URL detection — returns existing short_code instead of creating a new row
+
+## [Unreleased]
+
+- Deployed to Render
+- Replaced hardcoded localhost URL with BASE_URL environment variable
+- Added README with setup instructions and API documentation

@@ -1,0 +1,22 @@
+-- 1.
+-- CREATE TABLE urls (
+--   id SERIAL PRIMARY KEY,
+--   original_url TEXT NOT NULL,
+--   short_code VARCHAR(10) UNIQUE NOT NULL,
+--   clicks INTEGER DEFAULT 0,
+--   created_at TIMESTAMP DEFAULT NOW()
+-- );
+-- 2.
+-- ALTER TABLE urls ENABLE ROW LEVEL SECURITY;
+-- 3.
+-- SELECT indexname, indexdef 
+-- FROM pg_indexes 
+-- WHERE tablename = 'urls';
+-- 4
+-- CREATE TABLE clicks (
+--   id SERIAL PRIMARY KEY,
+--   short_code VARCHAR(10) NOT NULL REFERENCES urls(short_code),
+--   clicked_at TIMESTAMP DEFAULT NOW()
+-- );
+-- 5
+-- ALTER TABLE clicks ADD COLUMN ip_address VARCHAR(45);

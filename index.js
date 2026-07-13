@@ -4,6 +4,7 @@ import { base62encode } from './utils/base62.js';
 
 const app = express();
 const PORT = 3000;
+const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 
 app.set('trust proxy', true);
 
@@ -37,7 +38,7 @@ app.post('/api/shorten', async (req, res) => {
 
     if (existing.rows.length > 0) {
       return res.json({
-        shortUrl: `http://localhost:${PORT}/${existing.rows[0].short_code}`,
+        shortUrl: `${BASE_URL}/${existing.rows[0].short_code}`,
       });
     }
 
@@ -55,7 +56,7 @@ app.post('/api/shorten', async (req, res) => {
       newId,
     ]);
 
-    res.json({ shortUrl: `http://localhost:${PORT}/${shortCode}` });
+    res.json({ shortUrl: `${BASE_URL}/${shortCode}` });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Something went wrong' });
