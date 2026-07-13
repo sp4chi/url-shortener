@@ -38,3 +38,7 @@ See `docs/DECISIONS.md` for the reasoning behind key choices (encoding scheme, r
 - No user accounts — all links are public/anonymous
 - No click fraud detection (see DECISIONS.md)
 - Free-tier hosting may have cold-start delay (~30-60s) after inactivity
+
+## System Architecture
+
+![System architecture](docs/image.png)
