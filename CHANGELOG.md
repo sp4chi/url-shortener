@@ -56,3 +56,8 @@
 - Deployed to Render
 - Replaced hardcoded localhost URL with BASE_URL environment variable
 - Added README with setup instructions and API documentation
+
+## [Unreleased]
+
+- Added synthetic click data generator (exponential decay model)
+- Added GET /api/predict/:shortCode endpoint (linear regression forecast)

@@ -91,3 +91,15 @@
 - **Rejected:** Always insert a new row regardless of duplicates
 - **Context:** Prevents URL/row bloat and gives users a stable, reusable short link for the same destination.
 - **Known limitation:** Matching is exact-string only — does not normalize URLs (e.g. trailing slashes, http vs https, query param order would be treated as different URLs even if practically identical). Acceptable for hackathon scope; production system would add normalization before comparison.
+
+### Synthetic Data Generation (Click History)
+
+- **Method:** Exponential decay model — simulates realistic link behavior where clicks peak shortly after sharing and taper over ~30 days, with randomized noise layered on top (not pure randomness).
+- **Justification:** Real click patterns on shared links follow a well-documented decay curve rather than uniform/random distribution; generating data with this shape produces a more realistic and defensible input for the prediction model than random click counts would.
+- **Labeling:** Synthetic click rows marked with ip_address = 'synthetic-N' to remain distinguishable from real click logs.
+
+### Prediction Model
+
+- **Chosen:** Simple linear regression on daily click totals (simple-statistics library), with a residual-standard-deviation confidence band
+- **Rejected:** More complex models (ARIMA, Prophet) — unnecessary complexity for hackathon scope and harder to explain on demand
+- **Context:** Regression slope indicates trend direction (increasing/decreasing/flat); confidence band is a simplified approximation, explicitly not a rigorous statistical confidence interval, and documented as such.

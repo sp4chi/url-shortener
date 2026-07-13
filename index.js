@@ -1,6 +1,7 @@
 import express from 'express';
 import pool from './db.js';
 import { base62encode } from './utils/base62.js';
+import { predictFutureClicks } from './utils/predict.js';
 
 const app = express();
 const PORT = 3000;
@@ -60,6 +61,37 @@ app.post('/api/shorten', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+app.get('/api/predict/:shortCode', async (req, res) => {
+  const { shortCode } = req.params;
+
+  try {
+    const result = await pool.query(
+      `SELECT DATE(clicked_at) as click_date, COUNT(*) as count
+       FROM clicks WHERE short_code = $1
+       GROUP BY DATE(clicked_at) ORDER BY click_date ASC`,
+      [shortCode],
+    );
+
+    if (result.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ error: 'No click history for this short code' });
+    }
+
+    const dailyData = result.rows.map((row, index) => ({
+      day: index,
+      date: row.click_date,
+      clicks: parseInt(row.count),
+    }));
+
+    const prediction = predictFutureClicks(dailyData);
+    res.json({ shortCode, historicalDaily: dailyData, ...prediction });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Prediction failed' });
   }
 });
 
