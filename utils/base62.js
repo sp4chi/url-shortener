@@ -1,6 +1,6 @@
 const ALPHABET =
   '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-//const ALPHABET = '01';
+//const ALPHABET = '0123456789';
 const BASE = ALPHABET.length;
 
 export function base62encode(num) {

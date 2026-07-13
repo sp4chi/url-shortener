@@ -42,3 +42,11 @@
 ## [Unreleased]
 
 - Built static frontend (form, result display, links table with live click counts)
+
+## [Unreleased]
+
+- Tested and documented edge cases: duplicates, malformed input, missing fields, 404s, concurrency, injection safety
+
+## [Unreleased]
+
+- Added duplicate URL detection — returns existing short_code instead of creating a new row

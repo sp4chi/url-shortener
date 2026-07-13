@@ -29,6 +29,19 @@ app.post('/api/shorten', async (req, res) => {
   }
 
   try {
+    // Check for an existing entry first
+    const existing = await pool.query(
+      'SELECT short_code FROM urls WHERE original_url = $1',
+      [url],
+    );
+
+    if (existing.rows.length > 0) {
+      return res.json({
+        shortUrl: `http://localhost:${PORT}/${existing.rows[0].short_code}`,
+      });
+    }
+
+    // No existing row ? Proceed with insert-then-encode as before
     const insertResult = await pool.query(
       'INSERT INTO urls (original_url, short_code) VALUES ($1, $2) RETURNING id',
       [url, ''],

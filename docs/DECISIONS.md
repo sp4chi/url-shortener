@@ -76,3 +76,18 @@
 
 - **Known limitation:** Frontend tracks shortened links in browser memory (lost on refresh), not fetched from a "list all" backend endpoint, since no such endpoint exists yet.
 - **Future direction:** Add GET /api/urls to list all links from the DB, enabling persistence across page reloads/devices.
+
+### Edge Case Testing Summary
+
+- Duplicate URL submissions: currently produce distinct short codes each time (no dedup lookup).
+- Malformed/missing URL: returns 400, validated via Node's URL class
+- Nonexistent short code: returns 404
+- Concurrent shorten requests: cannot collide, since Postgres SERIAL guarantees atomic unique id generation and base62Encode is a pure function
+- SQL injection: not possible via current endpoints, since all queries use parameterized placeholders ($1, $2), never string concatenation
+
+### Duplicate URL Handling
+
+- **Chosen:** Check for an existing row with an exact match on original_url before inserting; return existing short_code if found
+- **Rejected:** Always insert a new row regardless of duplicates
+- **Context:** Prevents URL/row bloat and gives users a stable, reusable short link for the same destination.
+- **Known limitation:** Matching is exact-string only — does not normalize URLs (e.g. trailing slashes, http vs https, query param order would be treated as different URLs even if practically identical). Acceptable for hackathon scope; production system would add normalization before comparison.
