@@ -32,3 +32,9 @@
 
 - Implemented GET /api/stats/:shortCode endpoint
 - Created clicks table (FK to urls) for future time-series analytics
+
+## [Unreleased]
+
+- Added ip_address column to clicks table
+- Wired up click event logging (short_code, ip_address, timestamp) on every redirect
+- Set trust proxy for correct client IP behind future deployment proxy

@@ -54,3 +54,14 @@
 
 - **Chosen:** Simple `clicks` counter column for now; `clicks` log table created but unused until prediction feature (Day 9)
 - **Context:** Current requirement is only "show total clicks," which a counter satisfies cheaply. A full event log is unnecessary complexity until time-series data is actually needed (for forecasting). Table created early with a foreign key to `urls(short_code)` to enforce referential integrity from the start, even though writes to it haven't been implemented yet.
+
+### Known Limitation: No Click Fraud Detection
+
+- **Identified gap:** Current click counter treats all clicks as equally valid — cannot distinguish genuine unique visitors from repeated/spammed clicks from the same source.
+- **Why not built:** Requires logging per-click metadata (IP, timestamp) and windowed-query logic (e.g. "flag >N clicks from same IP within T minutes"), which is a meaningful feature on its own, not a small addition.
+- **Future direction:** Add ip_address to click log table; rate-limit repeated clicks from the same IP within a short window; treat repeated same-IP clicks within N seconds as a single "session" rather than N clicks.
+
+### Click Event Logging
+
+- **Chosen:** Log every click as a row in `clicks` table (short_code, ip_address, clicked_at), in addition to the simple counter on `urls`
+- **Context:** Counter remains the fast path for "total clicks" queries. Event log enables future features: time-series prediction (Day 9), basic spam-pattern visibility (same IP, many clicks). Used `trust proxy` setting since real deployment platforms sit behind a reverse proxy, and req.ip would otherwise return the proxy's address, not the client's.

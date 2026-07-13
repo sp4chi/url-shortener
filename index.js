@@ -5,6 +5,8 @@ import { base62encode } from './utils/base62.js';
 const app = express();
 const PORT = 3000;
 
+app.set('trust proxy', true);
+
 app.use(express.json());
 
 function validate(str) {
@@ -102,6 +104,13 @@ app.get('/:shortCode', async (req, res) => {
         shortCode,
       ])
       .catch((err) => console.error('Failed to log click:', err));
+
+    pool
+      .query('INSERT INTO clicks (short_code, ip_address) VALUES ($1, $2)', [
+        shortCode,
+        req.ip,
+      ])
+      .catch((err) => console.error('Failed to log click event:', err));
   } catch (err) {
     console.error(err);
     res.status(500).send('Something went wrong');
