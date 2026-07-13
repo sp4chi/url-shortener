@@ -65,3 +65,14 @@
 
 - **Chosen:** Log every click as a row in `clicks` table (short_code, ip_address, clicked_at), in addition to the simple counter on `urls`
 - **Context:** Counter remains the fast path for "total clicks" queries. Event log enables future features: time-series prediction (Day 9), basic spam-pattern visibility (same IP, many clicks). Used `trust proxy` setting since real deployment platforms sit behind a reverse proxy, and req.ip would otherwise return the proxy's address, not the client's.
+
+### Frontend Approach
+
+- **Chosen:** Plain HTML/CSS/vanilla JS, served as static files via Express
+- **Rejected:** React/build-tooled frontend
+- **Context:** Hackathon time constraints favor zero build-step setup. Frontend is a thin client of the existing REST API — same endpoints already tested via curl. Can be swapped for a framework later without touching backend code, since the API contract doesn't change.
+
+### Link List: Client-Side Only
+
+- **Known limitation:** Frontend tracks shortened links in browser memory (lost on refresh), not fetched from a "list all" backend endpoint, since no such endpoint exists yet.
+- **Future direction:** Add GET /api/urls to list all links from the DB, enabling persistence across page reloads/devices.

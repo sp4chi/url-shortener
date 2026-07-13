@@ -38,3 +38,7 @@
 - Added ip_address column to clicks table
 - Wired up click event logging (short_code, ip_address, timestamp) on every redirect
 - Set trust proxy for correct client IP behind future deployment proxy
+
+## [Unreleased]
+
+- Built static frontend (form, result display, links table with live click counts)

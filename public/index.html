@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>URL Shortener</h1>
+
+        <form id="shorten-form">
+            <input type="text" id="url-input" placeholder="Paste a long URL..." required>
+            <button type="submit">Shorten</button>
+        </form>
+
+        <div id="result" class="hidden">
+            <p>Your short link: <a id="short-link" href="#" target="_blank"></a></p>
+            <button id="copy-btn">Copy</button>
+        </div>
+
+        <h2>Your Links</h2>
+        <table id="links-table">
+            <thead>
+                <tr>
+                    <th>Short Link</th>
+                    <th>Original URL</th>
+                    <th>Clicks</th>
+                </tr>
+            </thead>
+            <tbody id="links-body"></tbody>
+        </table>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

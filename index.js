@@ -8,6 +8,7 @@ const PORT = 3000;
 app.set('trust proxy', true);
 
 app.use(express.json());
+app.use(express.static('public'));
 
 function validate(str) {
   try {
