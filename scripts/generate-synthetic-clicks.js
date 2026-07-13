@@ -1,14 +1,12 @@
 import pool from '../db.js';
 
 // Simulates realistic click decay: high clicks right after creation, tapering off over time
-function generateClicksForDay(daysAgo, peakClicks) {
-  // exponential decay formula: clicks fall off the further from day 0
+function generateClicksForDay(daysAgo, peakClicks, peakDaysAgo = 25) {
   const decayRate = 0.15;
+  const distanceFromPeak = Math.abs(daysAgo - peakDaysAgo);
   const expectedClicks = Math.round(
-    peakClicks * Math.exp(-decayRate * daysAgo),
+    peakClicks * Math.exp(-decayRate * distanceFromPeak),
   );
-
-  // add some randomness so it's not a perfectly smooth curve (real data never is)
   const noise = Math.floor(Math.random() * (expectedClicks * 0.3));
   return Math.max(
     0,
@@ -39,7 +37,7 @@ async function seedSyntheticClicks(
     }
   }
 
-  console.log(`Seeded synthetic clicks for ${shortCode}`);
+  console.log(`Seeded synthetic clicks for short url ${shortCode}`);
 }
 
 // Run this for a specific short_code you want to test predictions on

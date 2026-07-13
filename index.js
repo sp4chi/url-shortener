@@ -88,6 +88,14 @@ app.get('/api/predict/:shortCode', async (req, res) => {
     }));
 
     const prediction = predictFutureClicks(dailyData);
+
+    // NEW: check for the error case before responding
+    if (prediction.error) {
+      return res
+        .status(400)
+        .json({ error: prediction.error, historicalDaily: dailyData });
+    }
+
     res.json({ shortCode, historicalDaily: dailyData, ...prediction });
   } catch (err) {
     console.error(err);

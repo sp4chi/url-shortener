@@ -61,3 +61,8 @@
 
 - Added synthetic click data generator (exponential decay model)
 - Added GET /api/predict/:shortCode endpoint (linear regression forecast)
+
+## [Unreleased]
+
+- Added Chart.js visualization for click history + predictions
+- Added trend badge (increasing/decreasing/flat) for at-a-glance reading

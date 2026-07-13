@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>URL Shortener</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -32,6 +33,15 @@
             </thead>
             <tbody id="links-body"></tbody>
         </table>
+        <h2>Click Forecast</h2>
+        <div class="predict-controls">
+            <select id="predict-select"></select>
+            <button id="refresh-chart-btn" type="button">Refresh</button>
+        </div>
+        <div id="trend-badge"></div>
+        <canvas id="clicksChart" height="250"></canvas>
+        <p class="disclaimer">Forecast based on a simple linear trend model — treat as a rough estimate, not a
+            guarantee.</p>
     </div>
 
     <script src="app.js"></script>

@@ -103,3 +103,13 @@
 - **Chosen:** Simple linear regression on daily click totals (simple-statistics library), with a residual-standard-deviation confidence band
 - **Rejected:** More complex models (ARIMA, Prophet) — unnecessary complexity for hackathon scope and harder to explain on demand
 - **Context:** Regression slope indicates trend direction (increasing/decreasing/flat); confidence band is a simplified approximation, explicitly not a rigorous statistical confidence interval, and documented as such.
+
+### Dashboard Visualization
+
+- **Chosen:** Chart.js line chart — actual clicks (solid) vs predicted clicks (dashed) with shaded confidence band, plus a plain-language trend badge (increasing/decreasing/flat)
+- **Context:** Prioritized at-a-glance legibility for non-technical viewers over statistical precision — trend badge gives the headline conclusion, chart gives the detail for those who want it. Explicit disclaimer included since the prediction model (Day 9) is intentionally simple (linear regression), not presented as more rigorous than it is.
+
+### Dropdown/Chart Refresh Bug Fix
+
+- **Bug:** Rebuilding the <select> innerHTML on every 5-second stats refresh reset the dropdown to its first option, and the chart never loaded on initial page load since loadPrediction was only triggered inconsistently.
+- **Fix:** Preserve and restore the selected value across dropdown rebuilds; only auto-trigger the chart on first population, not every refresh cycle. Added a manual refresh button so the user controls when the chart re-fetches, rather than it changing silently underneath them.
